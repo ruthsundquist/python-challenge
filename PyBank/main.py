@@ -28,7 +28,7 @@ with open(csvpath, newline ='' ) as csvfile:
         P_L = int(row[1])  #column 0 is Date, column 1 is P&L
 
         #Add current P&L to the total amount 
-        netTotalAmount = netTotalAmount + P_L
+        netTotalAmount =  (netTotalAmount + P_L)
 
         #Delta Logic
         if countMonths > 1:  #start the Delta logic on the 2nd row of data
@@ -47,7 +47,15 @@ with open(csvpath, newline ='' ) as csvfile:
         #Last items before end of loop
         lastValue = P_L
 print("Months:" + str(countMonths))
-print("Net Total Amount: $" +str(netTotalAmount))
-print("Avg Change: $" + str(SumDelta/(countMonths -1)))
+print("Net Total Amount: $" + str(netTotalAmount))
+print("Avg Change: $" + str(' {:.3%}'.format(SumDelta/(countMonths -1))))
 print("Greatest Increase in Profits: " + MaxDeltaDate + " ($"+ str(MaxDelta) +")")
 print("Greatest Decrease in Profits: " + MinDeltaDate + " ($"+ str(MinDelta) +")")
+Bank = open("Pybank.txt", "w")
+Bank.write("Total Months:" + str(countMonths))
+Bank.write("Net Total Amount: $" + str(netTotalAmount))
+Bank.write("Avg Change: $" + str(' {:.3%}'.format(SumDelta/(countMonths -1))))
+Bank.write("Greatest Increase in Profits: " + MaxDeltaDate + " ($"+ str(MaxDelta) +")")
+Bank.write("Greatest Decrease in Profits: " + MinDeltaDate + " ($"+ str(MinDelta) +")")
+
+Bank.close()
